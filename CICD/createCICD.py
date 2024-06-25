@@ -90,7 +90,7 @@ df_joined.show()
 
 # Stop Spark Session
 spark.stop()
-print("Here we stop spark! and test webhook")
+print("Here we stop spark! and test webhook and add trigger-1")
 
 
 #to run from the cluster (mobaxterm)
