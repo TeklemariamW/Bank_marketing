@@ -1,3 +1,5 @@
+# When runing on Jenkin, take care of permistions with "chmod -R 777" command 
+
 from os.path import abspath
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import col, regexp_replace, upper
