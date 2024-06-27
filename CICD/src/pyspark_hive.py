@@ -1,24 +1,17 @@
-
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import lit, upper, concat, length, current_date, sum
 
 # Create spark session with hive enabled
 spark = SparkSession.builder \
         .appName("BankMarketing") \
+        .config("spark.sql.warehouse.dir", "/warehouse/tablespace/external/hive") \
         .enableHiveSupport() \
         .getOrCreate()
 
 # Initialize SparkSession with Hive support
 # Replace with your Hive warehouse directory
-'''
-spark1 = SparkSession.builder \
-    .appName("PostgreSQL to Hive with PySpark") \
-    .config("spark.jars", "postgresql-42.6.0.jar") \
-    .config("spark.logConf", "true") \
-    .config("spark.sql.warehouse.dir", "/tmp/catbd125/Tekle/") \
-    .enableHiveSupport() \
-    .getOrCreate()
-'''
+
+
 ## 1- Establish the connection to PostgresSQL and read data from the postgres Database -testdb
 # PostgresSQL connection properties
 postgres_url = "jdbc:postgresql://ec2-3-9-191-104.eu-west-2.compute.amazonaws.com:5432/testdb"
@@ -36,7 +29,7 @@ try:
     df_postgres = spark.read.jdbc(url=postgres_url, table=postgres_table_name, properties=postgres_properties)
     df_postgres.printSchema()
     df_postgres.show(3)
-   
+
     #-+-+--+-+--+-+--+-+--+-+--+-+--+-+--+-+--+-+--+-+--+-+--+-+--+-+--+-+--+-+--+-+-
     #-+-+--+-+--+-+--+-+--+-+-Transformations-+-+--+-+--+-+--+-+--+-+--+-+--+-+--+-+-
     #-+-+--+-+--+-+--+-+--+-+--+-+--+-+--+-+--+-+--+-+--+-+--+-+--+-+--+-+--+-+--+-+-
@@ -52,9 +45,9 @@ try:
     # Hive database and table names
     hive_database_name = "tekle"
     hive_table_name = "bank_marketing"
-    
+
    # Create Hive Internal table over project1db
-    df_postgres.write.mode('overwrite').saveAsTable("{}.{}".format(hive_database_name, hive_table_name))
+    df_upper.write.mode('overwrite').saveAsTable("{}.{}".format(hive_database_name, hive_table_name))
 
     print("Data saved successfully to Hive table: ", hive_table_name)
 
