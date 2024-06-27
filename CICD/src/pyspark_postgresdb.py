@@ -1,11 +1,10 @@
-#import findspark
-#findspark.init()
-
 from pyspark.sql import SparkSession
 
 spark = SparkSession.builder \
     .appName("PostgreSQL Connection with PySpark") \
     .config("spark.jars", "postgresql-42.6.0.jar") \
+    .config("spark.logConf", "true") \
+    .enableHiveSupport() \
     .getOrCreate()
 
 url = "jdbc:postgresql://ec2-3-9-191-104.eu-west-2.compute.amazonaws.com:5432/testdb"
@@ -16,21 +15,17 @@ properties = {
     "driver": "org.postgresql.Driver"
 }
 
-table_name = "bank"
+#table_name = "bank"
 
-#df = spark.read.jdbc(url, table_name, properties=properties)
 try:
-    df = spark.read.jdbc(url=url, table=table_name, properties=properties)
-    df.show()
+    df = spark.read.jdbc(url=url, table="bank", properties=properties)
+    df.printSchema()  # Assuming this was the operation causing the issue
+    df.show(5)  # Print some data to verify if DataFrame is loaded correctly
 except Exception as e:
-    print("Error reading data from PostgreSQL: ", e)
+    print("Error reading data from PostgreSQL: ",e)
+finally:
+    spark.stop()
 
-
-# Show DataFrame Schema
-df.printSchema()
-
-# Show First 5 Rows
-df.show(5)
 
 #connecting pyspark with postgressql
 # spark-submit --jars postgresql-42.6.0.jar myspark_pgresdb.py

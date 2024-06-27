@@ -1,5 +1,6 @@
 #pyspark
 #from pyspark.sql import SparkSession
+import pandas as pd
 
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import lit, upper, concat, length, current_date, sum
@@ -92,6 +93,18 @@ df_joined.show()
 spark.stop()
 print("Here we stop spark! and test webhook and add trigger-1")
 
+def process_data(data_file):
+    # Read data
+    df = spark.read_csv(data_file)
+    
+    # Drop missing values
+    df = df.dropna()
+    
+    # Perform certain operations
+    # For example, calculate the sum of a column
+    total = df['column'].sum()
+    
+    return total
 
 #to run from the cluster (mobaxterm)
 #spark-submit myspark.py
@@ -108,3 +121,5 @@ print("Here we stop spark! and test webhook and add trigger-1")
 #spark-submit --master yarn --deploy-mode client --num-executors 5 --executor-memory 4G --executor-cores 2 my_script.py
 
 #spark-submit --master yarn --deploy-mode cluster --num-executors 5 --executor-memory 4G --executor-cores 2 my_script.py
+
+
