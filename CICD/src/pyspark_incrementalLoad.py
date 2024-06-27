@@ -5,6 +5,7 @@ from pyspark.sql.functions import col, regexp_replace, upper
 # Create spark session with hive enabled
 spark = SparkSession.builder \
         .appName("BankMarketing") \
+        .config("spark.sql.warehouse.dir", "/warehouse/tablespace/external/hive") \
         .enableHiveSupport() \
         .getOrCreate()
 
