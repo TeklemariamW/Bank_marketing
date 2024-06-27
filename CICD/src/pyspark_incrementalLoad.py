@@ -27,22 +27,24 @@ try:
     df_postgres.printSchema()
     df_postgres.show(3)
 
+   
+    
+
+    # change job column into upper case
+    df_upper = df_postgres.withColumn("job_upper", upper(df_postgres['job']))
+    df_upper.show(5)
+
     ## 2. load df_postgres to hive table
     # Create database
     spark.sql("CREATE DATABASE IF NOT EXISTS tekle")
 
     # Hive database and table names
     hive_database_name = "tekle"
-    hive_table_name = "bank_marketing_2"
-
-    # change job column into upper case
-    df_upper = df_postgres.withColumn("job_upper", upper(df_postgres['job']))
-    df_upper.show(5)
+    hive_table_name = "bank_marketing"
 
     # read and show the existing_data in hive table
     existing_hive_data = spark.read.table("{}.{}".format(hive_database_name, hive_table_name))
-
-    existing_hive_data.show(3)
+    existing_hive_data.show()
 
     # 4. Determine the incremental data
     '''
