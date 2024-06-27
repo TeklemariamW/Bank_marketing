@@ -79,7 +79,7 @@ except Exception as ex:
 finally:
     spark.stop()
 
-# spark-submit --jars postgresql-42.6.0.jar 
+
 # spark-submit --jars postgresql-42.6.0.jar pyspark_incrementalLoad.py
 
 
